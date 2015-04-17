@@ -2,6 +2,9 @@
 
 set -eux
 
+# Openup the Sugar CRM HTTP port
+iptables -A INPUT -i eth1 -p tcp -m tcp --dport 2080 -j ACCEPT
+
 sudo apt-get update
 sudo apt-get install -y wget git
 
