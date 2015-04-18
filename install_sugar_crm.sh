@@ -2,6 +2,9 @@
 
 set -eux
 
+grep -q -F 'nameserver 8.8.8.8' /etc/resolv.conf || \
+    echo 'nameserver 8.8.8.8' >> /etc/resolv.conf
+
 sudo apt-get update
 sudo apt-get install -y wget git
 
@@ -51,3 +54,17 @@ EOF
 
   cat<<EOF > /etc/rc.local
 #!/bin/sh
+
+cd /root/docker-sugarcrm
+sed -i "s/ENV PERF_TESTER_HOST .*/ENV PERF_TESTER_HOST \$(hostname)/" Dockerfile
+
+/usr/local/bin/docker-compose build
+(/usr/local/bin/docker-compose up > /tmp/docker.log 2>&1) &
+
+exit 0
+EOF
+
+  chmod 755 /etc/rc.local
+  /etc/rc.local
+
+fi
