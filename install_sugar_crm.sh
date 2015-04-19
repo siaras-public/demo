@@ -5,6 +5,8 @@ set -eux
 grep -q -F 'nameserver 8.8.8.8' /etc/resolv.conf || \
     echo 'nameserver 8.8.8.8' >> /etc/resolv.conf
 
+sudo service apache2 stop
+
 sudo apt-get update
 sudo apt-get install -y wget git
 
